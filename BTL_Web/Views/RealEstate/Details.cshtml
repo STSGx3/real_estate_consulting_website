@@ -1,0 +1,97 @@
+﻿@model RealEstate
+@using BTL_Web.Helpers
+@{
+    ViewData["Title"] = "Chi tiết Bất động sản";
+    var imageList = Model.ImageUrl?.Split(';') ?? new string[0];
+}
+
+<div class="real-estate-detail-page">
+    <h2>Chi tiết Bất động sản</h2>
+
+    <div class="real-estate-detail">
+        <div class="real-estate-container">
+            <!-- Slideshow container -->
+            <div class="slideshow-container position-relative">
+                @for (int i = 0; i < imageList.Length; i++)
+                {
+                    <div class="mySlide" style="display:@(i == 0 ? "block" : "none")">
+                        <img src="@imageList[i]" class="real-estate-image-detail w-100" alt="Ảnh @i" />
+                    </div>
+                }
+
+                <!-- Nút điều hướng -->
+                <a class="prev" onclick="changeSlide(-1)">❮</a>
+                <a class="next" onclick="changeSlide(1)">❯</a>
+            </div>
+            <div class="details-container">
+                <div class="name">
+                    <strong>@Model.Name</strong>
+                </div>
+                <div class="price">
+                    <strong>
+                        @MoneyHelper.FormatMoney(Model.Price) 
+                    @if (Model.ListingType == "Cho thuê")
+                    {
+                        @: / tháng
+                        }
+                    </strong>
+                </div>
+                <div class="price-per-m2">
+                    <strong>Giá/m²: @ViewData["PricePerSquareMeterFormatted"]
+                    @if (Model.ListingType == "Cho thuê")
+                    {
+                        @: / tháng
+                        }
+                    </strong>
+                </div>
+                <div class="type">
+                    Loại: @Model.Type
+                </div>
+                <div class="area">
+                    Diện tích: @Model.Area m²
+                </div>
+                <div class="bedrooms">
+                    <strong>Phòng ngủ: @Model.BedroomCount 🛏️</strong>
+                </div>
+
+                <div class="bathrooms">
+                    <strong>Phòng tắm: @Model.BathroomCount 🛁</strong>
+                </div>
+                <div class="location">
+                    Vị trí: @Model.Location
+                </div>
+                <div class="description">
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="@Url.Action("Index", "RealEstate")">Quay lại danh sách</a>
+</div>
+@section Scripts {
+    <script>
+        let slideIndex = 0;
+        let slides = document.getElementsByClassName("mySlide");
+
+        function showSlide(n) {
+            if (!slides.length) return;
+            slideIndex = (n + slides.length) % slides.length;
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex].style.display = "block";
+        }
+
+        function changeSlide(n) {
+            showSlide(slideIndex + n);
+        }
+
+        function autoSlide() {
+            changeSlide(1);
+        }
+
+        // Auto slide every 5 seconds
+        setInterval(autoSlide, 5000);
+    </script>
+}

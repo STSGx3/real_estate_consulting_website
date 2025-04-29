@@ -1,0 +1,25 @@
+﻿@model IEnumerable<BTL_Web.Models.Consultant>
+
+<div class="row">
+    @foreach (var consultant in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@consultant.ImageUrl" class="card-img-top" alt="@consultant.Name" style="height: max-content; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">@consultant.Name</h5>
+                    <p class="card-text"><strong>SĐT:</strong> @consultant.PhoneNumber</p>
+                    <p class="card-text"><strong>Email:</strong> @consultant.Email</p>
+                    <p class="card-text"><strong>Chuyên môn:</strong> @consultant.Expertise</p>
+
+                    <div class="text-center mt-3">
+                        <a href="@Url.Action("Chat", "Consultant", new { id = consultant.Id })" class="btn btn-sm btn-outline-primary">
+                            💬 Nhắn tin
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

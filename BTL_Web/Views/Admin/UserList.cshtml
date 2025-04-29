@@ -1,0 +1,63 @@
+﻿@model List<User>
+@{
+    ViewData["Title"] = "Danh sách người dùng";
+}
+<h2>Danh sách người dùng</h2>
+
+<input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm..." />
+
+<table class="table table-bordered" style="margin-top:10px">
+    <thead>
+        <tr>
+            @* <th>ID</th> *@@* Khối tiêu đề ID  *@
+            <th>Tên đăng nhập</th>
+            <th>Vai trò</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="userTable">
+        @* Load danh sách ban đầu *@
+        @await Html.PartialAsync("_UserListPartial", Model)
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $('#searchInput').on('input', function () {
+            var query = $(this).val();
+
+            $.ajax({
+                url: '/Admin/SearchUsers',
+                type: 'POST',
+                data: { query: query },
+                success: function (html) {
+                    //console.log("Partial View:", html); // DEBUG
+                    $('#userTable').html(html);
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    $('#userTable').html('<tr><td colspan="4">Lỗi tìm kiếm</td></tr>');
+                }
+            });
+        });
+        function deleteUser(id) {
+            if (!confirm("Bạn có chắc muốn xóa người dùng này?")) return;
+
+            $.ajax({
+                url: '@Url.Action("DeleteUser", "Admin")',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    if (result.success) {
+                        $('#row-' + id).remove(); // Xóa người dùng trong bảng
+                    } else {
+                        alert(result.message || 'Lỗi khi xóa người dùng');
+                    }
+                },
+                error: function () {
+                    alert('Lỗi khi gửi yêu cầu xóa');
+                }
+            });
+        }
+    </script>
+}

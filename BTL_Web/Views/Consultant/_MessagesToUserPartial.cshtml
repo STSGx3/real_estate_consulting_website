@@ -1,0 +1,13 @@
+﻿@model List<BTL_Web.Models.Message>
+@{
+    var user = ViewBag.User as BTL_Web.Models.User;
+}
+
+@foreach (var msg in Model)
+{
+    <div class="@(msg.SenderRole == "Consultant" ? "message user" : "message consultant")">
+        <strong>@(msg.SenderRole == "Consultant" ? "Bạn" : user.Username):</strong>
+        <span>@msg.Content</span>
+        <div class="timestamp">@msg.Timestamp.ToString("HH:mm dd/MM/yyyy")</div>
+    </div>
+}

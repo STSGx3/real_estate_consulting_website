@@ -1,0 +1,141 @@
+﻿@model List<BTL_Web.Models.RealEstate>
+@{
+    ViewBag.Title = "Quản lý bất động sản";
+    ViewBag.ViewTitle = "Quản lý Bất động sản";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-primary text-white text-center py-3 mb-4">
+        <h1>@ViewBag.ViewTitle</h1>
+    </header>
+
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Menu trái - Nút Thêm mới -->
+            <div class="col-md-3">
+                <div class="d-grid gap-2">
+                    <button type="button" id="btnAdd" class="btn btn-success mb-3">➕ Thêm mới</button>
+                </div>
+            </div>
+
+            <!-- Main Container bên phải -->
+            <div class="col-md-9">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="container mt-4">
+                            <h2 class="text-center">Quản lý Bất Động Sản</h2>
+
+                            <!-- Hiển thị bảng danh sách bất động sản -->
+                            <div id="realEstateTableDashboard">
+                                @Html.Partial("_RealEstateTableDashboard", Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Bất động sản -->
+    <div id="addRealEstateModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Bất Động Sản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addRealEstateForm">
+                        <div class="form-group mb-2">
+                            <label for="name">Tên Bất Động Sản</label>
+                            <input type="text" class="form-control" id="name" name="Name" required />
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="type">Loại</label>
+                            <input type="text" class="form-control" id="type" name="Type" required />
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="price">Giá</label>
+                            <input type="number" class="form-control" id="price" name="Price" required />
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="area">Diện Tích</label>
+                            <input type="number" class="form-control" id="area" name="Area" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center text-muted py-3 border-top">
+        Nhóm BTL
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        $(document).ready(function () {
+            // Hiển thị modal khi nhấn nút "Thêm mới"
+            $('#btnAdd').click(function () {
+                var userRole = '@User.IsInRole("Admin")';
+                if (userRole !== 'true') {
+                    alert('Bạn không có quyền thêm bất động sản!');
+                    return;
+                }
+                $('#addRealEstateModal').modal('show');
+            });
+
+            // Submit form thêm bất động sản
+            $('#addRealEstateForm').submit(function (e) {
+                e.preventDefault();
+
+                var newRealEstate = {
+                    Name: $('#name').val(),
+                    Type: $('#type').val(),
+                    Price: $('#price').val(),
+                    Area: $('#area').val()
+                };
+
+                $.ajax({
+                    url: '@Url.Action("Create", "RealEstate")',
+                    type: 'POST',
+                    data: newRealEstate,
+                    success: function (response) {
+                        $('#realEstateTableDashboard').html(response);
+                        $('#addRealEstateModal').modal('hide');
+                        $('#addRealEstateForm')[0].reset();
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                    }
+                });
+            });
+
+            // Tự động cập nhật danh sách mỗi 5 giây
+            setInterval(function () {
+                $.ajax({
+                    url: '@Url.Action("List", "RealEstate")',
+                    type: 'GET',
+                    success: function (response) {
+                        $('#realEstateTableDashboard').html(response);
+                    }
+                });
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

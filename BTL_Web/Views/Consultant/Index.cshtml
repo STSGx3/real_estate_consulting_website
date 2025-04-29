@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BTL_Web.Models.Consultant>
+@{
+    ViewData["Title"] = "Tư vấn bất động sản";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Danh sách Nhân viên tư vấn</h2>
+
+    <!-- Search + Filter Form -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" id="searchName" class="form-control" placeholder="Tìm theo tên..." />
+        </div>
+        <div class="col-md-4">
+            <select id="expertiseFilter" class="form-control">
+                <option value="">Tất cả chuyên môn</option>
+                <option value="Nhà ở">Nhà ở</option>
+                <option value="Chung cư">Chung cư</option>
+                <option value="Đất nền">Đất nền</option>
+                <option value="Biệt thự">Biệt thự</option>
+                <option value="Khác">Khác</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="consultantList">
+        @Html.Partial("_ConsultantList", Model)
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadConsultants() {
+            const keyword = $('#searchName').val();
+            const expertise = $('#expertiseFilter').val();
+
+            $.get('/Consultant/FilterConsultants', { keyword, expertise }, function (data) {
+                $('#consultantList').html(data);
+            });
+        }
+
+        $('#searchName, #expertiseFilter').on('input change', loadConsultants);
+    </script>
+}

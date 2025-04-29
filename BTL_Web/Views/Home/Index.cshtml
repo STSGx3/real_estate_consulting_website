@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Trang chủ - BĐS Sun X";
+}
+
+<div class="container mt-5">
+
+    <!-- Chào mừng -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 text-primary">Chào mừng đến với công ty BĐS Sun X</h1>
+    </div>
+
+    <!-- Slogan -->
+    <div class="text-center mb-5">
+        <h4 class="text-secondary font-italic">"Đầu tư thông minh – Tương lai vững mạnh"</h4>
+    </div>
+
+    <!-- Giới thiệu công ty -->
+    <section class="bg-light p-5 rounded shadow">
+        <h2 class="text-center text-primary mb-4">Giới thiệu về Sun X</h2>
+        <p class="lead text-justify">
+            <strong>Công ty Bất động sản Sun X</strong> là đơn vị hàng đầu trong lĩnh vực tư vấn và đầu tư bất động sản tại Việt Nam.
+            Với đội ngũ chuyên gia giàu kinh nghiệm và am hiểu thị trường, Sun X cam kết mang đến cho khách hàng những giải pháp đầu tư hiệu quả,
+            an toàn và phù hợp nhất. Chúng tôi luôn đặt lợi ích khách hàng lên hàng đầu và không ngừng đổi mới để tạo dựng giá trị bền vững trong từng giao dịch.
+        </p>
+    </section>
+    <!-- Các khối chức năng -->
+    <div class="row mt-5">
+
+        <!-- Tìm hiểu bất động sản -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-primary">Tìm hiểu bất động sản</h4>
+                    <p class="card-text">
+                        Khám phá hàng trăm dự án bất động sản từ nhà ở, chung cư, đất nền đến biệt thự cao cấp.
+                        Lọc theo nhu cầu, vị trí, giá cả và diện tích để chọn được sản phẩm phù hợp với bạn nhất.
+                    </p>
+                    <a asp-controller="RealEstate" asp-action="Index" class="btn btn-outline-primary mt-2">
+                        Khám phá ngay
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tư vấn bất động sản -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-success">Tìm kiếm tư vấn bất động sản</h4>
+                    <p class="card-text">
+                        Kết nối nhanh chóng với đội ngũ tư vấn viên chuyên nghiệp của chúng tôi để được hỗ trợ và giải đáp mọi thắc mắc.
+                        Tìm đúng người, đúng chuyên môn để có được lời khuyên hữu ích nhất.
+                    </p>
+                    <a asp-controller="Consultant" asp-action="Index" class="btn btn-outline-success mt-2">
+                        Bắt đầu tư vấn
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,42 @@
+﻿@model List<RealEstate>
+@using BTL_Web.Helpers
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Loại</th>
+            <th>Vị trí</th>
+            <th>Giá</th>
+            <th>Diện tích</th>
+            <th>Mục đích</th>
+            <th>Ảnh</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Location</td>
+                <td>@MoneyHelper.FormatMoney(item.Price)</td>
+                <td>@item.Area m²</td>
+                <td>@item.ListingType</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        var firstImage = item.ImageUrl.Split(';').FirstOrDefault();
+                        <img src="@firstImage" width="100" />
+                    }
+
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="EditRealEstate" asp-route-id="@item.Id">Sửa</a>
+                    <a class="btn btn-sm btn-danger" asp-action="DeleteRealEstate" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

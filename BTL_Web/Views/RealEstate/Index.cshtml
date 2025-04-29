@@ -1,0 +1,160 @@
+﻿@model IEnumerable<RealEstate>
+
+@{
+    ViewData["Title"] = "Danh sách Bất động sản";
+}
+
+<div class="form-group mb-3">
+    <label><strong>Tìm kiếm theo tên</strong></label>
+    <input type="text" id="keywordFilter" class="form-control" placeholder="Nhập từ khóa...">
+</div>
+<button id="btnShowCookie" class="btn btn-outline-info mb-3">
+    Xem thông tin truy cập
+</button>
+
+<div id="cookieInfo" class="alert alert-secondary mt-2" style="display: none;">
+    <strong>Lần truy cập gần nhất:</strong>
+    <span id="lastVisitText">Đang tải...</span>
+</div>
+
+
+<div class="row">
+    <!-- Cột bên trái: Bộ lọc -->
+    <div class="col-md-3">
+        <!-- Bộ lọc hình thức -->
+        <div class="form-group mb-3">
+            <label><strong>Hình thức</strong></label>
+            <select id="listingTypeFilter" class="form-control">
+                <option value="">-- Tất cả --</option>
+                <option value="Mua bán">Mua bán</option>
+                <option value="Cho thuê">Cho thuê</option>
+            </select>
+        </div>
+
+        <!-- Bộ lọc loại -->
+        <div class="form-group mb-3">
+            <label><strong>Loại bất động sản</strong></label>
+            <select id="typeFilter" class="form-control">
+                <option value="">-- Tất cả loại --</option>
+                <option>Nhà ở</option>
+                <option>Chung cư</option>
+                <option>Đất nền</option>
+                <option>Biệt thự</option>
+                <option>Khác</option>
+            </select>
+        </div>
+
+        <!-- Bộ lọc giá -->
+        <div class="form-group mb-3">
+            <label><strong>Giá</strong></label>
+            <select id="priceFilter" class="form-control">
+                <option value="">-- Tất cả giá --</option>
+                <option value="0-1000000000">Dưới 1 tỷ</option>
+                <option value="1000000000-3000000000">1-3 tỷ</option>
+                <option value="3000000000-9999999999999">Trên 3 tỷ</option>
+            </select>
+        </div>
+
+        <!-- Bộ lọc diện tích -->
+        <div class="form-group mb-3">
+            <label><strong>Diện tích</strong></label>
+            <select id="areaFilter" class="form-control">
+                <option value="">-- Tất cả diện tích --</option>
+                <option value="0-50">Dưới 50m²</option>
+                <option value="50-100">50-100m²</option>
+                <option value="100-1000">Trên 100m²</option>
+            </select>
+        </div>
+
+        <!-- Sắp xếp -->
+        <div class="form-group mb-3">
+            <label><strong>Sắp xếp theo</strong></label>
+            <select id="sortBy" class="form-control">
+                <option value="">-- Chọn --</option>
+                <option value="price">Giá</option>
+                <option value="area">Diện tích</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label><strong>Thứ tự</strong></label>
+            <select id="sortOrder" class="form-control">
+                <option value="asc">Tăng dần</option>
+                <option value="desc">Giảm dần</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Cột bên phải: Danh sách bất động sản -->
+    <div class="col-md-9">
+        <div id="realEstateContainer">
+            @Html.Partial("_RealEstateTable", Model)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let autoRefreshInterval;
+
+        function loadFilteredData() {
+            const keyword = $('#keywordFilter').val();
+            const type = $('#typeFilter').val();
+            const price = $('#priceFilter').val();
+            const area = $('#areaFilter').val();
+            const sortBy = $('#sortBy').val();
+            const sortOrder = $('#sortOrder').val();
+            const listingType = $('#listingTypeFilter').val();
+
+            $.ajax({
+                url: '/RealEstate/FilterRealEstates',
+                data: { keyword, type, price, area, sortBy, sortOrder, listingType },
+                success: function (result) {
+                    $('#realEstateContainer').html(result);
+                }
+            });
+        }
+
+        $('#keywordFilter, #typeFilter, #priceFilter, #areaFilter, #sortBy, #sortOrder, #listingTypeFilter').on('input change', function () {
+            loadFilteredData();
+        });
+        // Hàm lấy cookie theo tên
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+            return null;
+        }
+
+        // Ghi cookie lần truy cập hiện tại (lưu 30 ngày)
+        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+        document.cookie = "lastVisit=" + new Date().toLocaleString() + "; expires=" + expires + "; path=/";
+
+        // Sự kiện nhấn nút hiển thị thông tin cookie
+        $('#btnShowCookie').on('click', function () {
+            const lastVisit = getCookie("lastVisit");
+            if (lastVisit) {
+                $('#lastVisitText').text(lastVisit);
+                $('#cookieInfo').slideDown(); // hiện hộp thông tin
+            } else {
+                $('#lastVisitText').text("Không có thông tin truy cập.");
+                $('#cookieInfo').slideDown();
+            }
+        });
+
+
+        // Ghi thời gian truy cập
+        document.cookie = "lastVisit=" + new Date().toLocaleString() + "; path=/";
+
+        // Hiển thị thời gian truy cập
+        const lastVisit = getCookie("lastVisit");
+        if (lastVisit) {
+            $('#lastVisitText').text(lastVisit);
+        } else {
+            $('#lastVisitText').text("Chưa có thông tin.");
+        }
+
+
+        autoRefreshInterval = setInterval(loadFilteredData, 5000);
+    </script>
+}

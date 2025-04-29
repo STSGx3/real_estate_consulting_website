@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div class="alert alert-info">
+    Xin chào, <strong>@ViewBag.Username</strong>! Bạn đang truy cập trang quản trị.
+</div>
+
+<div class="row">
+    <!-- Quản lý người dùng -->
+    <div class="col-md-6">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Quản lý người dùng</h5>
+                <p class="card-text">Xem và quản lý danh sách người dùng.</p>
+                <a href="@Url.Action("UserList", "Admin")" class="btn btn-light">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quản lý Bất động sản -->
+    <div class="col-md-6">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Quản lý Bất động sản</h5>
+                <p class="card-text">Thêm mới và quản lý danh sách bất động sản.</p>
+                <a href="@Url.Action("ManageRealEstates", "Admin")" class="btn btn-light">Quản lý</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+<!-- Quản lý nhân viên tư vấn -->
+<div class="col-md-6">
+    <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Quản lý nhân viên tư vấn</h5>
+            <p class="card-text">Xem và quản lý danh sách nhân viên tư vấn.</p>
+            <a href="@Url.Action("ManageConsultants", "Admin")" class="btn btn-light">Xem chi tiết</a>
+        </div>
+    </div>
+</div>
+
+<!-- Quản lý dịch vụ tư vấn -->
+<div class="col-md-6">
+    <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Quản lý dịch vụ tư vấn</h5>
+            <p class="card-text">Xem và quản lý danh sách dịch vụ tư vấn.</p>
+            <a href="@Url.Action("ManageChats", "Admin")" class="btn btn-light">Xem chi tiết</a>
+        </div>
+    </div>
+</div>
+</div>

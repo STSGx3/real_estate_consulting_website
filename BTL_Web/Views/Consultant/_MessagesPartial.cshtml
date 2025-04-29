@@ -1,0 +1,13 @@
+﻿@model List<Message>
+@{
+    var consultantId = ViewBag.ConsultantId;
+}
+
+@foreach (var msg in Model)
+{
+    <div class="@(msg.SenderRole == "User" ? "message user" : "message consultant")">
+        <strong>@(msg.SenderRole == "User" ? "Bạn" : "Tư vấn viên"):</strong>
+        <span>@msg.Content</span>
+        <div class="timestamp">@msg.Timestamp.ToString("HH:mm dd/MM/yyyy")</div>
+    </div>
+}

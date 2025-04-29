@@ -1,0 +1,27 @@
+﻿@model List<Message>
+@{
+    var user = ViewBag.User as User;
+    var consultant = ViewBag.Consultant as Consultant;
+}
+
+<h4>Đoạn chat giữa @user.Username và @consultant.Name</h4>
+
+<div class="chat-box">
+    @foreach (var msg in Model)
+    {
+        <div class="message @(msg.SenderRole == "User" ? "user" : "consultant")">
+            <strong>@(msg.SenderRole == "User" ? user.Username : consultant.Name):</strong>
+            <span>@msg.Content</span>
+            <div class="timestamp">@msg.Timestamp.ToString("HH:mm dd/MM/yyyy")</div>
+        </div>
+    }
+</div>
+
+<style>
+    .chat-box {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+</style>

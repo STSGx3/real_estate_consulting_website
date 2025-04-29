@@ -1,0 +1,28 @@
+﻿@model List<ChatSummaryViewModel>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Người dùng</th>
+            <th>Nhân viên</th>
+            <th>Nội dung cuối</th>
+            <th>Thời gian cuối</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var chat in Model)
+        {
+            <tr>
+                <td>@chat.Username</td>
+                <td>@chat.ConsultantName</td>
+                <td>@chat.LastMessageContent</td>
+                <td>@chat.LastMessageTime.ToString("HH:mm dd/MM/yyyy")</td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewChat(@chat.UserId, @chat.ConsultantId)">Xem chi tiết</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteChat(@chat.UserId, @chat.ConsultantId)">Xóa</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

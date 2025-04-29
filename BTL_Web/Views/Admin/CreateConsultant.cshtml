@@ -1,0 +1,45 @@
+﻿@model ConsultantWithAccountViewModel
+@{
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString().Contains("Edit") ? "Sửa Nhân viên" : "Thêm Nhân viên";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+    <div class="form-group">
+        <label>Ảnh</label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Tên</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Số điện thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Chuyên môn</label>
+        <select asp-for="Expertise" class="form-control">
+            <option>Nhà ở</option>
+            <option>Chung cư</option>
+            <option>Đất nền</option>
+            <option>Biệt thự</option>
+            <option>Khác</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Tên đăng nhập</label>
+        <input type="text" asp-for="Username" class="form-control" placeholder="Tên đăng nhập" />
+    </div>
+    <div class="form-group">
+        <label>Mật khẩu</label>
+        <input type="password" asp-for="Password" class="form-control" placeholder="Mật khẩu" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Lưu</button>
+    <a asp-action="ManageConsultants" class="btn btn-secondary mt-2">Quay lại</a>
+</form>
+

@@ -1,0 +1,114 @@
+﻿@model List<RealEstate>
+
+@{
+    ViewData["Title"] = "Quản lý Bất động sản";
+}
+
+<h2>Quản lý Bất động sản</h2>
+
+<div class="mb-3">
+    <input type="text" id="searchBox" class="form-control" placeholder="Tìm kiếm theo tên...">
+</div>
+
+<a class="btn btn-success mb-3" asp-action="CreateRealEstate">+ Thêm mới</a>
+
+<div class="row">
+    <!-- CỘT BÊN TRÁI: FORM LỌC -->
+    <div class="col-md-2 border-end">
+        <h5>Hình thức</h5>
+        <select id="listingTypeFilter" class="form-select mb-3">
+            <option value="">-- Tất cả --</option>
+            <option value="Mua bán">Mua bán</option>
+            <option value="Cho thuê">Cho thuê</option>
+        </select>
+        <h5 class="mt-2">Loại bất động sản</h5>
+        <select id="typeFilter" class="form-select mb-3">
+            <option value="">-- Tất cả loại --</option>
+            <option>Nhà ở</option>
+            <option>Chung cư</option>
+            <option>Đất nền</option>
+            <option>Biệt thự</option>
+            <option>Khác</option>
+        </select>
+
+        <h5>Giá</h5>
+        <select id="priceFilter" class="form-select mb-3">
+            <option value="">-- Tất cả giá --</option>
+            <option value="0-1000000000">Dưới 1 tỷ</option>
+            <option value="1000000000-3000000000">1-3 tỷ</option>
+            <option value="3000000000-9999999999999">Trên 3 tỷ</option>
+        </select>
+
+        <h5>Diện tích</h5>
+        <select id="areaFilter" class="form-select mb-3">
+            <option value="">-- Tất cả diện tích --</option>
+            <option value="0-30">Dưới 30m²</option>
+            <option value="30-60">30 - 60m²</option>
+            <option value="60-100">60 - 100m²</option>
+            <option value="100-9999">Trên 100m²</option>
+        </select>
+
+        <!-- Sắp xếp -->
+        <div class="form-group mb-3">
+            <label><strong>Sắp xếp theo</strong></label>
+            <select id="sortBy" class="form-control">
+                <option value="">-- Chọn --</option>
+                <option value="price">Giá</option>
+                <option value="area">Diện tích</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label><strong>Thứ tự</strong></label>
+            <select id="sortOrder" class="form-control">
+                <option value="asc">Tăng dần</option>
+                <option value="desc">Giảm dần</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- CỘT BÊN PHẢI: KẾT QUẢ -->
+    <div class="col-md-10">
+        <div id="realEstateTable">
+            @Html.Partial("_RealEstateTable", Model)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterAndSearch() {
+            const keyword = $('#searchBox').val();
+            const type = $('#typeFilter').val();
+            const price = $('#priceFilter').val();
+            const area = $('#areaFilter').val();
+            const sortBy = $('#sortBy').val();
+            const sortOrder = $('#sortOrder').val();
+            const listingType = $('#listingTypeFilter').val();
+
+            $.ajax({
+                url: '@Url.Action("FilterRealEstates", "Admin")',
+                type: 'GET',
+                data: {
+                    keyword,
+                    type,
+                    price,
+                    area,
+                    sortBy,
+                    sortOrder,
+                    listingType
+                },
+                success: function (result) {
+                    $('#realEstateTable').html(result);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#searchBox, #typeFilter, #priceFilter, #areaFilter, #sortBy, #sortOrder, #listingTypeFilter')
+                .on('input change', function () {
+                    filterAndSearch();
+                });
+        });
+    </script>
+}

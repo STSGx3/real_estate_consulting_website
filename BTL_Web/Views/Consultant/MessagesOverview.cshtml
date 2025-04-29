@@ -1,0 +1,36 @@
+﻿@model List<MessageOverviewViewModel>
+
+<h3>Danh sách người dùng đang nhắn tin</h3>
+
+<table class="table">
+    <div class="mb-3 d-flex justify-content-between">
+        <input type="text" id="searchBox" class="form-control w-50" placeholder="Tìm theo tên người dùng" />
+        <select id="sortSelect" class="form-select w-25 ms-2">
+            <option value="desc">Mới nhất</option>
+            <option value="asc">Cũ nhất</option>
+        </select>
+    </div>
+
+    <div id="messagesContainer">
+        @await Html.PartialAsync("_MessagesOverviewPartial", new List<MessageOverviewViewModel>())
+    </div>
+</table>
+@section Scripts {
+    <script>
+        function loadMessages() {
+            const search = $('#searchBox').val();
+            const sort = $('#sortSelect').val();
+            $.get('/Consultant/GetMessagesOverview', { search, sort }, function (data) {
+                $('#messagesContainer').html(data);
+            });
+        }
+
+        $(document).ready(function () {
+            loadMessages(); // lần đầu
+            setInterval(loadMessages, 5000); // sau mỗi 5 giây
+
+            $('#searchBox').on('input', loadMessages);
+            $('#sortSelect').on('change', loadMessages);
+        });
+    </script>
+}

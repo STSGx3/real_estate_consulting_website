@@ -1,0 +1,17 @@
+﻿@model List<Consultant>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td><img src="@item.ImageUrl" alt="@item.Name" width="50" /></td>
+        <td>@item.Name</td>
+        <td>@item.PhoneNumber</td>
+        <td>@item.Email</td>
+        <td>@item.Expertise</td>
+        <td>
+            <a asp-action="EditConsultant" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
+            <a asp-action="DeleteConsultant" asp-route-id="@item.Id" class="btn btn-danger">Xóa</a>
+
+        </td>
+    </tr>
+}

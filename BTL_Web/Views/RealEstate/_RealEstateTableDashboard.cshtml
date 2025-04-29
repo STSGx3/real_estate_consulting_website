@@ -1,0 +1,25 @@
+﻿@model List<BTL_Web.Models.RealEstate>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Loại</th>
+            <th>Giá</th>
+            <th>Diện Tích</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Price</td>
+                <td>@item.Area</td>
+               
+            </tr>
+        }
+    </tbody>
+</table>

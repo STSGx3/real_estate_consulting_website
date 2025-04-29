@@ -1,0 +1,283 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Hiệu ứng gạch đỏ dưới chữ (chỉ áp dụng cho main-nav) */
+.main-nav .nav-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    padding-bottom: 5px;
+}
+
+    .main-nav .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        width: 0;
+        background-color: red;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .main-nav .nav-link:hover::after,
+    .main-nav .nav-link.active::after {
+        width: 100%;
+    }
+
+/* Khoảng cách giữa các mục menu */
+.main-nav .nav-item {
+    margin-right: 20px; /* hoặc dùng Bootstrap: class me-4 trong Razor cũng được */
+}
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------*/
+/*Đây là css của trang bất động sản*/
+/* Đảm bảo Flexbox hoạt động đúng */
+.real-estate-list {
+    display: flex;
+    flex-direction: column; /* Sắp xếp theo chiều dọc */
+}
+
+.real-estate-item {
+    display: flex;
+    flex-direction: row; /* Đặt ảnh và nội dung cùng một hàng */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.real-estate-item {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+    .real-estate-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .real-estate-item a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+
+.real-estate-container {
+    display: flex;
+    width: 100%;
+    flex-direction: row; /* Đảm bảo ảnh và thông tin cùng một hàng */
+}
+
+.image-container {
+    flex: 1; /* Ảnh chiếm 1 phần */
+    max-width: 30%; /* Giới hạn chiều rộng của ảnh */
+    padding-right: 10px;
+}
+
+.real-estate-image {
+    width: 100%; /* Đảm bảo ảnh chiếm toàn bộ không gian của container */
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.details-container {
+    flex: 2; /* Nội dung chiếm 2 phần còn lại */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.price, .type, .name, .area, .location, .roomcount {
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.area, .type, .location, .roomcount {
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+
+/* Loại bỏ gạch chân cho tất cả các liên kết */
+a {
+    text-decoration: none;
+}
+
+/* Nếu bạn chỉ muốn loại bỏ gạch chân cho các liên kết trong ô bất động sản */
+.real-estate-item a {
+    text-decoration: none;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------*/
+/*Đây là css của trang chi tiết bất động sản*/
+/* Áp dụng chỉ cho trang Chi tiết Bất động sản */
+.real-estate-detail-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+    .real-estate-detail-page h2 {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .real-estate-detail-page .real-estate-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .real-estate-detail-page .slideshow-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+    }
+
+    .real-estate-detail-page .mySlide img {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .real-estate-detail-page .prev,
+    .real-estate-detail-page .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        padding: 10px;
+        font-weight: bold;
+        font-size: 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        transform: translateY(-50%);
+        z-index: 10;
+        border-radius: 3px;
+    }
+
+    .real-estate-detail-page .prev {
+        left: 10px;
+    }
+
+    .real-estate-detail-page .next {
+        right: 10px;
+    }
+
+    .real-estate-detail-page .details-container {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .real-estate-detail-page .name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #34495e;
+        margin: 10px 0;
+    }
+
+    .real-estate-detail-page .price {
+        font-size: 26px;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .real-estate-detail-page .price-per-m2 {
+        font-size: 15px;
+        font-weight: bold;
+        color: gray;
+        margin-top: 10px;
+    }
+
+    .real-estate-detail-page .area,
+    .real-estate-detail-page .location,
+    .real-estate-detail-page .description,
+    .real-estate-detail-page .type,
+    .real-estate-detail-page .bedrooms,
+    .real-estate-detail-page .bathrooms {
+        font-size: 18px;
+        color: #7f8c8d;
+        margin-top: 10px;
+    }
+
+    .real-estate-detail-page a {
+        margin-top: 30px;
+        padding: 12px 25px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .real-estate-detail-page a:hover {
+            background-color: #2980b9;
+        }
+/*----------------------------------------------------------------------*/
+/*CSS trang tư vấn bất động sản*/
+.consultant-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.card {
+    border-radius: 12px;
+    transition: transform 0.2s;
+}
+
+    .card:hover {
+        transform: scale(1.02);
+    }

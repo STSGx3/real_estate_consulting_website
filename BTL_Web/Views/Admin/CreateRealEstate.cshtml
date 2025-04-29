@@ -1,0 +1,108 @@
+﻿@model RealEstate
+@{
+    ViewData["Title"] = "Thêm Bất động sản";
+}
+<h2>Thêm Bất động sản</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Hình thức</label>
+        <select asp-for="ListingType" class="form-control">
+            <option value="">-- Chọn hình thức --</option>
+            <option value="Mua bán">Mua bán</option>
+            <option value="Cho thuê">Cho thuê</option>
+        </select>
+        <span asp-validation-for="ListingType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Tên</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Loại</label>
+        <select asp-for="Type" class="form-control">
+            <option>Nhà ở</option>
+            <option>Chung cư</option>
+            <option>Đất nền</option>
+            <option>Biệt thự</option>
+            <option>Khác</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Vị trí</label>
+        <input asp-for="Location" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Giá</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Diện tích (m²)</label>
+        <input asp-for="Area" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="BedroomCount">Số phòng ngủ</label>
+        <input asp-for="BedroomCount" class="form-control" type="number" min="0" />
+    </div>
+
+    <div class="form-group">
+        <label for="BathroomCount">Số phòng tắm</label>
+        <input asp-for="BathroomCount" class="form-control" type="number" min="0" />
+    </div>
+
+    <div class="form-group">
+        <label>Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Link ảnh</label>
+        <div id="imageInputs">
+            <input type="text" class="form-control mb-2 image-link" placeholder="Nhập link ảnh..." />
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="addImageInput()">+ Thêm ảnh</button>
+
+        <!-- Hidden field để gộp tất cả link ảnh -->
+        <input type="hidden" name="ImageUrl" id="ImageUrl" />
+    </div>
+
+
+
+    <div class="Button-controller" style="margin-top:10px">
+    <!-- Nút Lưu -->
+    <button type="submit" class="btn btn-primary">Lưu</button>
+
+    <!-- Nút Hủy -->
+    <a href="@Url.Action("ManageRealEstates", "Admin")" class="btn btn-danger ms-2">Hủy</a>
+    </div>
+</form>
+@section Scripts {
+    <script>
+        function addImageInput(value = "") {
+            const inputGroup = $(`
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control image-link" placeholder="Nhập link ảnh..." />
+                            <button type="button" class="btn btn-outline-danger remove-image">X</button>
+                        </div>
+                    `);
+            inputGroup.find('input').val(value);
+            $('#imageInputs').append(inputGroup);
+        }
+
+        $('form').on('submit', function () {
+            const links = [];
+            $('.image-link').each(function () {
+                const val = $(this).val().trim();
+                if (val !== '') {
+                    links.push(val);
+                }
+            });
+            $('#ImageUrl').val(links.join(';'));//Gộp thành chuỗi cách nhau bằng ; --> sẽ thành một chuỗi như sau: Link1;Link2;Link3
+        });
+        // Bắt sự kiện xoá input ảnh
+        $('#imageInputs').on('click', '.remove-image', function () {
+            $(this).closest('.input-group').remove();
+        });
+    </script>
+}

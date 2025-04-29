@@ -1,0 +1,66 @@
+﻿<h2>Quản lý tư vấn - Các đoạn chat</h2>
+<div class="d-flex mb-3">
+    <input type="text" id="searchInput" class="form-control me-2" placeholder="Tìm theo tên nhân viên" />
+    <select id="sortOrder" class="form-select w-auto">
+        <option value="desc">Mới nhất</option>
+        <option value="asc">Cũ nhất</option>
+    </select>
+</div>
+<div id="chatListContainer">
+    @{
+        await Html.RenderPartialAsync("_ChatSummaryList", new List<ChatSummaryViewModel>());
+    }
+</div>
+
+<div id="chatDetailContainer" class="mt-4"></div>
+
+@section Scripts {
+    <script>
+        let currentChatTimeout = null;
+
+        function loadChatList() {
+            $("#chatListContainer").load("/Admin/LoadChatList");
+        }
+
+        function viewChat(userId, consultantId) {
+            // Xóa timeout cũ nếu có
+            if (currentChatTimeout) {
+                clearTimeout(currentChatTimeout);
+                currentChatTimeout = null;
+            }
+
+            // Load đoạn chat mới
+            $("#chatDetailContainer").load(`/Admin/ChatDetail?userId=${userId}&consultantId=${consultantId}`, function () {
+                // Set timeout để reload sau 5s
+                currentChatTimeout = setTimeout(() => viewChat(userId, consultantId), 5000);
+            });
+        }
+
+        function deleteChat(userId, consultantId) {
+            if (confirm("Bạn có chắc muốn xóa đoạn chat này?")) {
+                $.post("/Admin/DeleteChat", { userId, consultantId }, function () {
+                    loadChatList();
+                    $("#chatDetailContainer").html('');
+                    if (currentChatTimeout) {
+                        clearTimeout(currentChatTimeout);
+                        currentChatTimeout = null;
+                    }
+                });
+            }
+        }
+        function loadChatList() {
+            const search = $("#searchInput").val();
+            const sortOrder = $("#sortOrder").val();
+
+            $("#chatListContainer").load(`/Admin/LoadChatList?search=${encodeURIComponent(search)}&sortOrder=${sortOrder}`);
+        }
+
+        $("#searchInput, #sortOrder").on("input change", function () {
+            loadChatList();
+        });
+
+        // Khởi chạy lần đầu và set interval cập nhật danh sách chat
+        loadChatList();
+        setInterval(loadChatList, 5000);
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<RealEstate>
+
+<div class="real-estate-list">
+    @foreach (var item in Model)
+    {
+        <div class="real-estate-item">
+            <a href="@Url.Action("Details", "RealEstate", new { id = item.Id })">
+            <div class="real-estate-container">
+                <div class="image-container">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            var firstImage = item.ImageUrl.Split(';').FirstOrDefault();
+                            <img src="@firstImage" class="real-estate-image" alt="@item.Name" />
+                        }
+                </div>
+                <div class="details-container">
+                    <div class="price">@item.Price.ToString("N0") VND</div>
+                    <div class="name">@item.Name</div>
+                    <div class="type"> @item.Type </div>
+                        <div class="roomcount">
+                            @if (item.BedroomCount > 0)
+                            {
+                                <span>
+                                    @item.BedroomCount 🛏️
+                                </span>
+                            }
+                            @if (item.BathroomCount > 0)
+                            {
+                                <span style="margin-left: 10px;">
+                                    @item.BathroomCount 🛁
+                                </span>
+                            }
+                        </div>
+                    <div class="area">Diện tích: @item.Area m²</div>
+                    <div class="location">Vị trí: @item.Location</div>
+                </div>
+            </div>
+            </a>
+        </div>
+    }
+</div>

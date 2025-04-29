@@ -1,0 +1,20 @@
+﻿@model List<User>
+
+@foreach (var user in Model)
+{
+    <tr id="row-@user.Id">
+        @* <td>@user.Id</td> *@ @* Khối hiển thị ID của người dùng *@
+        <td>@user.Username</td>
+        <td>@user.Role</td>
+        <td>
+            <button class="btn btn-danger btn-sm" onclick="deleteUser(@user.Id)">Xóa</button>
+        </td>
+    </tr>
+}
+
+@if (!Model.Any())
+{
+    <tr>
+        <td colspan="4" class="text-center">Không tìm thấy người dùng nào</td>
+    </tr>
+}
